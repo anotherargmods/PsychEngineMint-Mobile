@@ -81,20 +81,34 @@ class MusicBeatSubstate extends flixel.FlxSubState {
 
 	/**
 	 * Returns the object that should receive mobile input: the deepest open
-	 * `MusicBeatSubstate`, or the current state if there is none.
+	 * `MusicBeatSubstate` that owns a touch pad, otherwise the deepest open
+	 * `MusicBeatSubstate` (or the current state when there is none).
+	 *
+	 * Sub menus that never received a pad of their own (the controls remapper, for
+	 * example) must not swallow the input of the menu that opened them.
 	 */
 	public static function getInputTarget():MusicBeatSubstate {
-		var target:MusicBeatSubstate = Std.isOfType(FlxG.state, MusicBeatSubstate) ? cast FlxG.state : null;
+		var withInput:MusicBeatSubstate = null;
+		var deepest:MusicBeatSubstate = null;
 		var current:flixel.FlxState = FlxG.state;
-		while (current.subState != null) {
+		while (true) {
+			if (Std.isOfType(current, MusicBeatSubstate)) {
+				deepest = cast current;
+				if (deepest.touchPad != null || deepest.mobileControls != null)
+					withInput = deepest;
+			}
+			if (current.subState == null)
+				break;
 			current = current.subState;
-			if (Std.isOfType(current, MusicBeatSubstate))
-				target = cast current;
 		}
-		return target;
+		return withInput != null ? withInput : deepest;
 	}
 
 	public function addTouchPad(DPad:String, Action:String) {
+		#if mobile
+		// the pad layouts come from `MobileData`, which may not be loaded yet on the very first state
+		MobileData.init();
+		#end
 		touchPad = new TouchPad(DPad, Action);
 		add(touchPad);
 	}

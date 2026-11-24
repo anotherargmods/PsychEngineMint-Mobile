@@ -569,6 +569,10 @@ class ChartingState extends ScriptedState implements PsychUIEventHandler.PsychUI
 		fullTipText.screenCenter();
 		add(fullTipText);
 		
+		#if mobile
+		addTouchPad('LEFT_FULL', 'CHART_EDITOR');
+		#end
+
 		super.create();
 		
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);

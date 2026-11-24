@@ -119,6 +119,11 @@ class AchievementsMenuState extends ScriptedState
 		add(nameText);
 		
 		_changeSelection();
+
+		#if mobile
+		addTouchPad('UP_DOWN', 'A_B');
+		#end
+
 		super.create();
 		
 		FlxG.camera.follow(camFollow, null, 0.15);

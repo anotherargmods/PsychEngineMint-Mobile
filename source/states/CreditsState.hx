@@ -100,6 +100,11 @@ class CreditsState extends ScriptedState
 		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4] ?? '808080');
 		intendedColor = bg.color;
 		changeSelection();
+
+		#if mobile
+		addTouchPad('UP_DOWN', 'A_B');
+		#end
+
 		super.create();
 	}
 
@@ -238,7 +243,7 @@ class CreditsState extends ScriptedState
 		var translatedCredits:String = (#if MODS_ALLOWED folder != null ? Paths.mods('$folder/$path') : #end Paths.getPath(path, TEXT, false));
 		#end
 
-		if (#if TRANSLATIONS_ALLOWED (FileSystem.exists(translatedCredits) && (creditsFile = translatedCredits) == translatedCredits) || #end FileSystem.exists(creditsFile))
+		if (#if TRANSLATIONS_ALLOWED (Paths.exists(translatedCredits) && (creditsFile = translatedCredits) == translatedCredits) || #end Paths.exists(creditsFile))
 		{
 			var firstarray:Array<String> = Paths.getTextFromFile(creditsFile).split('\n');
 			for(i in firstarray)

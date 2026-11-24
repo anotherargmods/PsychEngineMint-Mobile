@@ -45,6 +45,10 @@ Do you wish to disable them?');
 			texts.add(button);
 		}
 
+		#if mobile
+		addTouchPad('LEFT_RIGHT', 'A_B');
+		#end
+
 		FlxTween.tween(texts, {alpha: 1.0}, 0.5, {
 			onComplete: (_) -> updateItems()
 		});

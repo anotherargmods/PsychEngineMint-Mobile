@@ -276,11 +276,12 @@ class TypedTouchButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 			#if mac
 			var button = FlxMouseButton.getByID(FlxMouseButtonID.LEFT);
 			if (checkInput(FlxG.mouse, button, button.justPressedPosition, camera))
+				overlap = true;
 			#else
 			for (touch in FlxG.touches.list)
 				if (checkInput(touch, touch, touch.justPressedPosition, camera))
+					overlap = true;
 			#end
-			overlap = true;
 		}
 
 		return overlap;

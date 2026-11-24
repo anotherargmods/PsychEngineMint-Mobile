@@ -137,6 +137,10 @@ class DialogueCharacterEditorState extends MusicBeatState implements PsychUIEven
 		FlxG.mouse.visible = true;
 		updateCharTypeBox();
 		
+		#if mobile
+		addTouchPad('DIALOGUE_PORTRAIT', 'DIALOGUE_PORTRAIT');
+		#end
+
 		super.create();
 	}
 

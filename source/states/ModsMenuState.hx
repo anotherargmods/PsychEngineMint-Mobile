@@ -282,6 +282,11 @@ class ModsMenuState extends MusicBeatState
 		_lastControllerMode = controls.controllerMode;
 
 		changeSelectedMod();
+
+		#if mobile
+		addTouchPad('UP_DOWN', 'A_B');
+		#end
+
 		super.create();
 	}
 	

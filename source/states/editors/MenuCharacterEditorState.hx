@@ -60,6 +60,10 @@ class MenuCharacterEditorState extends MusicBeatState implements PsychUIEventHan
 		updateCharacters();
 		updatePresence();
 
+		#if mobile
+		addTouchPad('MENU_CHARACTER', 'MENU_CHARACTER');
+		#end
+
 		super.create();
 	}
 	

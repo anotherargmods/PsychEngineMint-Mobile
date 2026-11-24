@@ -110,6 +110,10 @@ class StageEditorState extends MusicBeatState implements PsychUIEventHandler.Psy
 		FlxG.mouse.visible = true;
 		animationEditor = new StageEditorAnimationSubstate();
 
+		#if mobile
+		addTouchPad('LEFT_FULL', 'CHARACTER_EDITOR');
+		#end
+
 		super.create();
 	}
 

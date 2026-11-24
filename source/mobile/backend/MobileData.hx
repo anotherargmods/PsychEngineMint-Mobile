@@ -22,8 +22,17 @@ class MobileData
 	public static var forcedMode:Null<Int>;
 	public static var save:FlxSave;
 
+	/**
+	 * Guards `init()`, the layouts and settings have to be read once per launch.
+	*/
+	public static var initialized:Bool = false;
+
 	public static function init()
 	{
+		if (initialized)
+			return;
+
+		initialized = true;
 		save = new FlxSave();
 		save.bind('MobileControls', CoolUtil.getSavePath());
 

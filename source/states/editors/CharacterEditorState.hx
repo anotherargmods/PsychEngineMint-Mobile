@@ -166,6 +166,10 @@ class CharacterEditorState extends ScriptedState implements PsychUIEventHandler.
 
 		if(ClientPrefs.data.cacheOnGPU) Paths.clearUnusedMemory();
 
+		#if mobile
+		addTouchPad('LEFT_FULL', 'CHARACTER_EDITOR');
+		#end
+
 		super.create();
 	}
 
