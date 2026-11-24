@@ -150,6 +150,22 @@ class Paths
 	static public function setCurrentLevel(name:String)
 		currentLevel = name.toLowerCase();
 
+	/**
+	 * Whether `path` exists on disk or inside the packaged assets. Android ships the game data
+	 * inside the APK, so a plain `FileSystem.exists` is not enough on mobile.
+	 */
+	public static function exists(path:String):Bool
+	{
+		if (path == null || path.length == 0)
+			return false;
+
+		#if sys
+		if (FileSystem.exists(path))
+			return true;
+		#end
+		return OpenFlAssets.exists(path);
+	}
+
 	public static function getPath(file:String, ?type:AssetType = TEXT, ?parentfolder:String, ?modsAllowed:Bool = true):String
 	{
 		#if MODS_ALLOWED
@@ -178,7 +194,7 @@ class Paths
 				return levelPath;
 		}
 		
-		if (#if sys FileSystem.exists(file) #else OpenFlAssets.exists(file) #end) return file;
+		if (exists(file)) return file;
 		
 		return getSharedPath(file);
 	}
@@ -319,12 +335,12 @@ class Paths
 
 	inline static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
 	{
-		var path:String = getPath(key, TEXT, !ignoreMods);
+		var path:String = getPath(key, TEXT, null, !ignoreMods);
 		#if sys
-		return (FileSystem.exists(path)) ? File.getContent(path) : null;
-		#else
-		return (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
+		if (FileSystem.exists(path))
+			return File.getContent(path);
 		#end
+		return (OpenFlAssets.exists(path, TEXT)) ? OpenFlAssets.getText(path) : null;
 	}
 
 	inline static public function font(key:String, embedded:Bool = true)
@@ -465,13 +481,16 @@ class Paths
 		//trace('precaching sound: $file');
 		if(!currentTrackedSounds.exists(file))
 		{
+			var loaded:Sound = null;
 			#if (MODS_ALLOWED && sys)
 			if(FileSystem.exists(file))
-				currentTrackedSounds.set(file, Sound.fromFile(file));
-			#else
-			if(OpenFlAssets.exists(file, SOUND))
-				currentTrackedSounds.set(file, OpenFlAssets.getSound(file));
+				loaded = Sound.fromFile(file);
 			#end
+			if(loaded == null && OpenFlAssets.exists(file, SOUND))
+				loaded = OpenFlAssets.getSound(file);
+
+			if(loaded != null)
+				currentTrackedSounds.set(file, loaded);
 			else if(beepOnNull)
 			{
 				trace('SOUND NOT FOUND: $key, PATH: $path');

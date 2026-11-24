@@ -113,11 +113,7 @@ class Character extends ModchartSprite
 		var characterPath:String = 'characters/$character.json';
 
 		var path:String = Paths.getPath(characterPath, TEXT);
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(path))
-		#else
-		if (!Assets.exists(path))
-		#end
+		if (!Paths.exists(path))
 		{
 			path = Paths.getSharedPath('characters/' + DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
 			missingCharacter = true;
