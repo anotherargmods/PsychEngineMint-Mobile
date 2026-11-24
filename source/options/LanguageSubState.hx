@@ -101,6 +101,10 @@ class LanguageSubState extends ScriptedSubState
 			grpLanguages.add(text);
 		}
 		changeSelected();
+
+		#if mobile
+		addTouchPad('LEFT_FULL', 'A_B');
+		#end
 	}
 
 	var changedLanguage:Bool = false;

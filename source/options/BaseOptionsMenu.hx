@@ -73,7 +73,11 @@ class BaseOptionsMenu extends ScriptedSubState
 		setupOptions();
 		changeSelection();
 		reloadCheckboxes();
-		
+
+		#if mobile
+		addTouchPad('LEFT_FULL', 'A_B_C');
+		#end
+
 		super.create();
 	}
 	

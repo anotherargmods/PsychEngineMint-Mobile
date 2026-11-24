@@ -524,6 +524,20 @@ class NoteOffsetState extends ScriptedState
 			controllerPointer.visible = controls.controllerMode;
 		}
 
+		#if mobile
+		removeTouchPad();
+		if(onComboMenu)
+		{
+			addTouchPad('NONE', 'A_B_C');
+			addTouchPadCamera();
+		}
+		else
+		{
+			addTouchPad('LEFT_FULL', 'A_B_C');
+			addTouchPadCamera();
+		}
+		#end
+
 		var str:String;
 		var str2:String;
 		if(onComboMenu)
@@ -531,7 +545,9 @@ class NoteOffsetState extends ScriptedState
 		else
 			str = Language.getPhrase('note_delay', 'Note/Beat Delay');
 
-		if(!controls.controllerMode)
+		if(controls.mobileC)
+			str2 = '(Press A to Switch)';
+		else if(!controls.controllerMode)
 			str2 = Language.getPhrase('switch_on_accept', '(Press Accept to Switch)');
 		else
 			str2 = Language.getPhrase('switch_on_start', '(Press Start to Switch)');
