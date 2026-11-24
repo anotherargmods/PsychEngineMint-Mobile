@@ -101,6 +101,7 @@ class Main extends Sprite
 		}
 
 		Sys.setCwd(storageDir);
+		mobile.backend.StorageUtil.setupGameDirectory(Path.addTrailingSlash(storageDir));
 		#elseif ios
 		Sys.setCwd(lime.system.System.applicationStorageDirectory);
 		#end
